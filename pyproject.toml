@@ -36,7 +36,7 @@ dependencies = [
 ]
 
 [project.urls]
-Source = "https://github.com/adsabs/SciXAugmentAffil"
+Source = "https://github.com/adsabs/SciXAugmentAffilPipeline"
 
 [project.optional-dependencies]
 dev = [
@@ -62,17 +62,17 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov=SciXAugment_Affil/Augment_Affil --cov=SciXAugment_Affil/API --cov-report=term-missing"
+addopts = "--cov=SciXAugmentAffil/augmentaffil --cov=SciXAugmentAffil/API --cov-report=term-missing"
 cache_dir = ".tmp/"
 testpaths = [
-    "SciXAugment_Affil/tests",
+    "SciXAugmentAffil/tests",
 ]
 pythonpath = [
-    "SciXAugment_Affil/",
+    "SciXAugmentAffil/",
 ]
 
 [tool.coverage.run]
-data_file = "SciXAugment_Affil/.coverage"
+data_file = "SciXAugmentAffil/.coverage"
 
 [tool.coverage.report]
 skip_empty = true
@@ -80,7 +80,7 @@ skip_covered = true
 
 [tool.isort]
 profile = "black"
-known_first_party = ["Augment_Affil", "API", "tests",]
+known_first_party = ["augmentaffil", "API", "tests",]
 
 [tool.black]
 line-length = 99 # override black's default line-length
@@ -93,7 +93,7 @@ build-backend = "flit_core.buildapi"
 # see setup.py for explanation of these
 [xsetup.entry_points]
 console_scripts = [
-    "adsingestp=adsingestp.cli:cli",
+    "augmentaffil=augmentaffil.cli:cli",
 ]
 [xsetup]
 scripts = [
