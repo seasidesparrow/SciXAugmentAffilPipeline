@@ -2,7 +2,8 @@ import os
 import datetime
 from SciXPipelineUtils.utils import load_config, setup_logging
 
-import Augment_Affil.models as models
+import augmentaffil.models as models
+import augmentaffil.utils as utils
 
 proj_home = os.path.realpath(os.path.dirname(__file__))
 config = load_config(proj_home=proj_home)
@@ -10,6 +11,35 @@ logger = setup_logging("run.py", proj_home=proj_home,
                        level=config.get("LOGGING_LEVEL", "INFO"),
                        attach_stdout=config.get("LOG_STDOUT", False))
 
+# Affil-specific defs
+
+def load_institutions()
+    try:
+        infile = config.get("AFF_INST_FILE", None)
+        rows = utils.read_affil_file(infile)
+        # validate and create db rows
+        model = models.AffilInst()
+        output = []
+        for r in rows:
+            if len(r) != 6:
+                logger.warning("Bad Inst row: %s" % str(r))
+            else:
+                o = model.toRow(r)
+                if not o:
+                    logger.warning("Empty Inst row: %s" % str(r))
+                else:
+                    output.append(o)
+        if output:
+            with cls.session_scope() as session:
+                session.execute(insert(AffilInst), output)
+                session.commit()
+                logger.info("Loaded %s rows of institution data" % len(output))
+        else:
+            logger.error("No valid data from %s!" % infile)
+    except Exception as err:
+        logger.error("Failed to read institution data: %s" % err)
+
+# Redis / Kafka boilerplate defs
 def write_status_redis(redis_instance, status):
     logger.debug("Publishing status: {}".format(status))
     redis_instance.publish("Augment_Affil_statuses", status)
