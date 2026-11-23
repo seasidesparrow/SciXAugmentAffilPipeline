@@ -8,7 +8,7 @@ Create Date: 2026-09-12 12:00:00.000000
 import sqlalchemy as sa
 from alembic import op
 
-import Augment_Affil.models as models
+import augmentaffil.models as models
 
 # revision identifiers, used by Alembic.
 revision = "c5e36cdeefe7"

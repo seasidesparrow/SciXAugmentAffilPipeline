@@ -1,7 +1,7 @@
 import enum
 
 from SciXPipelineUtils.scix_uuid import scix_uuid as uuid
-from sqlalchemy import Column, DateTime, Enum, Integer, String, Text, Boolean, Index
+from sqlalchemy import Column, DateTime, Enum, Integer, String, Text, Boolean, Index, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -20,8 +20,8 @@ class AffilInst(Base):
     inst_location = Column(String, nullable=True)
     inst_rorid = Column(String, nullable=True)
     inst_notes = Column(Text, nullable=True)
-    created = Column(DateTime, default=get_date)
-    updated = Column(DateTime, onupdate=get_date)
+    created = Column(DateTime, default=func.now())
+    updated = Column(DateTime, onupdate=func.now())
 
     def toJSON(self):
         try:
@@ -59,8 +59,8 @@ class AffilData(Base):
     affil_string = Column(Text, unique=True, nullable=False)
     norm_string = Column(Text, primary_key=True, unique=False, nullable=False)
     flagged_multi = Column(Boolean, default=False, nullable=False)
-    created = Column(DateTime, default=get_date, nullable=False)
-    updated = Column(DateTime, onupdate=get_date, nullable=False)
+    created = Column(DateTime, default=func.now(), nullable=False)
+    updated = Column(DateTime, onupdate=func.now(), nullable=False)
 
     __table_args__ = (Index('norm_index', norm_string, postgresql_using="hash"),)
 
