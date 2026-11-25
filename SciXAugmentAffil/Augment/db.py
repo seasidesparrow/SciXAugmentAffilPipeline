@@ -6,7 +6,7 @@ import Augment.models as models
 import Augment.utils as utils
 
 proj_home = os.path.realpath(os.path.dirname(__file__))
-config = load_config(proj_home=os.path.join(proj_home, "../")
+config = load_config(proj_home=os.path.join(proj_home, "../"))
 logger = setup_logging("run.py", proj_home=os.path.join(proj_home, "../"),
                        level=config.get("LOGGING_LEVEL", "INFO"),
                        attach_stdout=config.get("LOG_STDOUT", False))
