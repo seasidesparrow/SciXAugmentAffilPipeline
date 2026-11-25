@@ -21,6 +21,10 @@ packages = [
 dependencies = [
     'confluent-kafka==2.15.1',
     'fastavro==1.12.1',
+    'httpx2',
+    'authlib',
+    'cachetools',
+    'attrs',
     'avro==1.11.1',
     'redis==4.5.4',
     'alembic==1.8.1',
