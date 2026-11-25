@@ -70,7 +70,6 @@ def downgrade() -> None:
     op.drop_table("affil_inst")
     op.drop_table("affil_data")
     op.drop_table("grpc_status")
-    op.execute("DROP TYPE Source")
     op.execute("DROP TYPE Status")
 
     # ### end Alembic commands ###
