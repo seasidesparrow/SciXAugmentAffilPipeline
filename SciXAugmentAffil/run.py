@@ -34,6 +34,7 @@ def main():
         asyncio.run(template_server.serve())
 
     if args.load_all:
+        db.load_institutions(cls)
 
 if __name__ == "__main__":
     main()

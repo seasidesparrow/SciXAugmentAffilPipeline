@@ -13,7 +13,7 @@ logger = setup_logging("run.py", proj_home=proj_home,
 
 # Affil-specific defs
 
-def load_institutions()
+def load_institutions(cls):
     try:
         infile = config.get("AFF_INST_FILE", None)
         rows = utils.read_affil_file(infile)
