@@ -12,10 +12,7 @@ from SciXPipelineUtils.s3_methods import load_s3_providers
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from affil import db
-
-# Can we abstract this so that you don't have to add the following line?
-from affil.augmenter.augment_affil import AugmentAffilApp
+from Augment import db
 
 
 def init_pipeline(proj_home):

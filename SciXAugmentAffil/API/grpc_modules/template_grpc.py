@@ -2,8 +2,8 @@
 import grpc
 
 
-class TemplateInitStub(object):
-    """The Stub for connecting to the Template init service."""
+class AugmentInitStub(object):
+    """The Stub for connecting to the Augment init service."""
 
     def __init__(self, channel, avroserialhelper):
         """Constructor.
@@ -11,42 +11,42 @@ class TemplateInitStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.initTemplate = channel.unary_stream(
-            "/templateaapi.TemplateInit/initTemplate",
+        self.initAugment = channel.unary_stream(
+            "/templateaapi.AugmentInit/initTemplate",
             request_serializer=avroserialhelper.avro_serializer,
             response_deserializer=avroserialhelper.avro_deserializer,
         )
 
 
-class TemplateInitServicer(object):
-    """The servicer definition for initiating jobs with the Template pipeline."""
+class AugmentInitServicer(object):
+    """The servicer definition for initiating jobs with the Augment pipeline."""
 
-    def initTemplate(self, request, context):
+    def initAugment(self, request, context):
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
 
-def add_TemplateInitServicer_to_server(servicer, server, avroserialhelper):
+def add_AugmentInitServicer_to_server(servicer, server, avroserialhelper):
     """The actual methods for sending and receiving RPC calls."""
     rpc_method_handlers = {
-        "initTemplate": grpc.unary_stream_rpc_method_handler(
-            servicer.initTemplate,
+        "initAugment": grpc.unary_stream_rpc_method_handler(
+            servicer.initAugment,
             request_deserializer=avroserialhelper.avro_deserializer,
             response_serializer=avroserialhelper.avro_serializer,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "templateaapi.TemplateInit", rpc_method_handlers
+        "templateaapi.AugmentInit", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
-class TemplateInit(object):
-    """The definition of the Template gRPC API and stream connections."""
+class AugmentInit(object):
+    """The definition of the Augment gRPC API and stream connections."""
 
     @staticmethod
-    def initTemplate(
+    def initAugment(
         request,
         target,
         options=(),
@@ -61,7 +61,7 @@ class TemplateInit(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            "/templateaapi.TemplateInit/initTemplate",
+            "/templateaapi.AugmentInit/initTemplate",
             options,
             channel_credentials,
             insecure,
@@ -73,8 +73,8 @@ class TemplateInit(object):
         )
 
 
-class TemplateMonitorStub(object):
-    """The Stub for connecting to the Template Monitor service."""
+class AugmentMonitorStub(object):
+    """The Stub for connecting to the Augment Monitor service."""
 
     def __init__(self, channel, avroserialhelper):
         """Constructor.
@@ -82,42 +82,42 @@ class TemplateMonitorStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.monitorTemplate = channel.unary_stream(
-            "/templateaapi.TemplateMonitor/monitorTemplate",
+        self.monitorAugment = channel.unary_stream(
+            "/templateaapi.AugmentMonitor/monitorTemplate",
             request_serializer=avroserialhelper.avro_serializer,
             response_deserializer=avroserialhelper.avro_deserializer,
         )
 
 
-class TemplateMonitorServicer(object):
-    """The servicer definition for monitoring jobs already submitted to the Template pipeline."""
+class AugmentMonitorServicer(object):
+    """The servicer definition for monitoring jobs already submitted to the Augment pipeline."""
 
-    def monitorTemplate(self, request, context):
+    def monitorAugment(self, request, context):
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
 
-def add_TemplateMonitorServicer_to_server(servicer, server, avroserialhelper):
+def add_AugmentMonitorServicer_to_server(servicer, server, avroserialhelper):
     """The actual methods for sending and receiving RPC calls."""
     rpc_method_handlers = {
-        "monitorTemplate": grpc.unary_stream_rpc_method_handler(
-            servicer.monitorTemplate,
+        "monitorAugment": grpc.unary_stream_rpc_method_handler(
+            servicer.monitorAugment,
             request_deserializer=avroserialhelper.avro_deserializer,
             response_serializer=avroserialhelper.avro_serializer,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "templateaapi.TemplateMonitor", rpc_method_handlers
+        "templateaapi.AugmentMonitor", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
-class TemplateMonitor(object):
+class AugmentMonitor(object):
     """The definition of the Monitor gRPC API and stream connections."""
 
     @staticmethod
-    def monitorTemplate(
+    def monitorAugment(
         request,
         target,
         options=(),
@@ -132,7 +132,7 @@ class TemplateMonitor(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            "/templateaapi.TemplateMonitor/monitorTemplate",
+            "/templateaapi.AugmentMonitor/monitorTemplate",
             options,
             channel_credentials,
             insecure,

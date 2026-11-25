@@ -109,7 +109,6 @@ def augment_storage_record(app, record, norm):
     # Receives msgs with master_pipeline.records.bib_data format
     # Sends msgs with master_pipeline.records.augments format
     try:
-        
         author_data = []
         affils = record.get("aff", [])
         found = {}

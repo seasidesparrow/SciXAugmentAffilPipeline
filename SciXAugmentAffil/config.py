@@ -1,5 +1,5 @@
 LOGGING_LEVEL = "DEBUG"
-LOG_STDOUT = False
+LOG_STDOUT = True
 # SQLALCHEMY Configuration
 SQLALCHEMY_URL = "postgresql://affildb:affildb@localhost:5432/affildb"
 SQLALCHEMY_ECHO = False

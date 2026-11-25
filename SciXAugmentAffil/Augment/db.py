@@ -2,8 +2,8 @@ import os
 import datetime
 from SciXPipelineUtils.utils import load_config, setup_logging
 
-import augmentaffil.models as models
-import augmentaffil.utils as utils
+import Augment.models as models
+import Augment.utils as utils
 
 proj_home = os.path.realpath(os.path.dirname(__file__))
 config = load_config(proj_home=proj_home)
@@ -127,32 +127,3 @@ def update_job_status(cls, job_hash, status=None):
             updated = True
     return updated
 
-
-def write_Augment_Affil_record(cls, record_id, date, s3_key, checksum, source):
-    """
-    Write harvested record to db.
-    """
-    success = False
-    with cls.session_scope() as session:
-        Augment_Affil_record = models.Augment_Affil_record()
-        Augment_Affil_record.id = record_id
-        Augment_Affil_record.s3_key = s3_key
-        Augment_Affil_record.date = date
-        Augment_Affil_record.checksum = checksum
-        Augment_Affil_record.source = source
-        session.add(Augment_Affil_record)
-        session.commit()
-        success = True
-    return success
-
-
-def get_Augment_Affil_record(session, record_id):
-    """
-    Return record with UUID: record_id
-    """
-    record_db = (
-        session.query(models.Augment_Affil_record)
-        .filter(models.Augment_Affil_record.id == record_id)
-        .first()
-    )
-    return record_db

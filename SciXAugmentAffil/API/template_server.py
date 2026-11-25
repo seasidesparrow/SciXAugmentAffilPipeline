@@ -19,12 +19,12 @@ from SciXPipelineUtils.avro_serializer import AvroSerialHelper
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from API.grpc_modules.template_grpc import (
-    TemplateInitServicer,
-    add_TemplateInitServicer_to_server,
-    add_TemplateMonitorServicer_to_server,
+from API.grpc_modules.augment_grpc import (
+    AugmentInitServicer,
+    add_AugmentInitServicer_to_server,
+    add_AugmentMonitorServicer_to_server,
 )
-from TEMPLATE import db
+from Augment import db
 
 HERE = Path(__file__).parent
 proj_home = str(HERE / "..")
@@ -52,7 +52,7 @@ class Listener(Thread):
         self.subscription = self.redis.pubsub()
         self.end = False
 
-    def subscribe(self, channel_name="TEMPLATE_statuses"):
+    def subscribe(self, channel_name="augment_statuses"):
         self.subscription.subscribe(channel_name)
 
     def get_status_redis(self, job_id, logger):

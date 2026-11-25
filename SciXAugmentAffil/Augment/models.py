@@ -7,6 +7,10 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
+# Define any tables needed for the Augment app, in this for backoffice
+# institution definitions and data for matched affiliation strings
+
 class AffilInst(Base):
     __tablename__ = "affil_inst"
 
@@ -89,13 +93,6 @@ class Status(enum.Enum):
     Processing = 2
     Error = 3
     Success = 4
-
-
-class Source(enum.Enum):
-    SYMBOL1 = 1
-    SYMBOL2 = 2
-    SYMBOL3 = 3
-    SYMBOL4 = 4
 
 
 class gRPC_status(Base):

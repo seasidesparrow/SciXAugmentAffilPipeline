@@ -3,13 +3,10 @@ import asyncio
 import os
 
 from API import template_server
-from AugmentAffil import template
+from augmentaffil import augment
 
 def get_args():
     parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers(help="commands", dest="action")
-    subparsers.add_parser("AugmentAffil_API", help="Initialize AugmentAffil gRPC API")
-    subparsers.add_parser("AugmentAffil_APP", help="Initialize AugmentAffil Working Unit")
 
     parser.add_argument(
         "-l",
@@ -19,9 +16,14 @@ def get_args():
         default=False,
         help="Load data from files to affil db."
     )
+
+    subparsers = parser.add_subparsers(help="commands", dest="action")
+    subparsers.add_parser("Augment_API", help="Initialize Augment gRPC API")
+    subparsers.add_parser("Augment_APP", help="Initialize Augment Working Unit")
+
                        
 
-if __name__ == "__main__":
+def main():
     args = parser.parse_args()
 
     if args.action == "AugmentAffil_APP":
@@ -32,3 +34,6 @@ if __name__ == "__main__":
         asyncio.run(template_server.serve())
 
     if args.load_all:
+
+if __name__ == "__main__":
+    main()
