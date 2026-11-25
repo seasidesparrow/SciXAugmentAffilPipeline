@@ -40,7 +40,7 @@ class AffilInst(Base):
         except Exception as err:
             return {"error": err}
                 
-    def toRow(rowdat):
+    def toRow(self, rowdat):
         if len(rowdat) == 6:
             return {"inst_iso_country": rowdat[0],
                     "inst_country": rowdat[1],
@@ -77,7 +77,7 @@ class AffilData(Base):
         except Exception as err:
             return {"error": err}
 
-    def toRow(rowdat):
+    def toRow(self, rowdat):
         if len(rowdat) == 3:
             return {"affil_id": rowdat[0],
                     "affil_string": rowdat[1],
