@@ -2,7 +2,7 @@ import argparse
 import asyncio
 import os
 
-from API import template_server
+from API import augment_server
 from Augment import augment, db
 
 def get_args():
@@ -28,10 +28,10 @@ def main():
 
     if args.action == "AugmentAffil_APP":
         proj_home = os.path.realpath("/app/SciXAugmentAffil/")
-        template.init_pipeline(proj_home)
+        augment.init_pipeline(proj_home)
 
     elif args.action == "AugmentAffil_API":
-        asyncio.run(template_server.serve())
+        asyncio.run(augment_server.serve())
 
     if args.load_all:
         db.load_institutions(cls)

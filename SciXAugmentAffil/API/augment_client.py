@@ -1,4 +1,4 @@
-"""The Python AsyncIO implementation of the GRPC template.TemplateInit client."""
+"""The Python AsyncIO implementation of the GRPC augment.AugmentInit client."""
 
 import argparse
 import asyncio
@@ -11,7 +11,7 @@ from confluent_kafka.schema_registry import SchemaRegistryClient
 from SciXPipelineUtils.avro_serializer import AvroSerialHelper
 from SciXPipelineUtils.utils import get_schema
 
-import SciXTEMPLATE.API.grpc_modules.template_grpc as template_grpc
+import SciXAUGMENT.API.grpc_modules.augment_grpc as augment_grpc
 
 
 class Logging:
@@ -23,14 +23,14 @@ def input_parser(cli_args):
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(help="commands", dest="action")
     process_parser = subparsers.add_parser(
-        "TEMPLATE_INIT", help="Initialize a job with given inputs"
+        "AUGMENT_INIT", help="Initialize a job with given inputs"
     )
     process_parser.add_argument(
         "--task_args",
         action="store",
         dest="job_args",
         type=str,
-        help="JSON dump containing arguments for Template Processes",
+        help="JSON dump containing arguments for Augment Processes",
     )
     process_parser.add_argument(
         "--persistence",
@@ -48,7 +48,7 @@ def input_parser(cli_args):
     )
 
     process_parser = subparsers.add_parser(
-        "TEMPLATE_MONITOR", help="Initialize a job with given inputs"
+        "AUGMENT_MONITOR", help="Initialize a job with given inputs"
     )
     process_parser.add_argument(
         "--job_id", action="store", dest="job_id", type=str, help="Job ID string to query."
@@ -66,7 +66,7 @@ def input_parser(cli_args):
 
 def output_message(args):
     s = {}
-    if args.action == "TEMPLATE_INIT":
+    if args.action == "AUGMENT_INIT":
         if args.job_args:
             task_args = json.loads(args.job_args)
             s["task_args"] = task_args
@@ -74,7 +74,7 @@ def output_message(args):
                 s["task_args"]["ingest"] = bool(task_args["ingest"])
         s["task_args"]["persistence"] = args.persistence
         s["task"] = args.task
-    elif args.action == "TEMPLATE_MONITOR":
+    elif args.action == "AUGMENT_MONITOR":
         s["task"] = "MONITOR"
         s["task_args"] = {"persistence": args.persistence}
         s["hash"] = args.job_id
@@ -85,7 +85,7 @@ async def run() -> None:
     schema_client = SchemaRegistryClient({"url": "http://localhost:8081"})
 
     logger = Logging(logging)
-    schema = get_schema(logger, schema_client, "TemplateInputSchema")
+    schema = get_schema(logger, schema_client, "AugmentInputSchema")
 
     avroserialhelper = AvroSerialHelper(schema)
 
@@ -94,8 +94,8 @@ async def run() -> None:
         s = output_message(args)
         if s["task"] == "MONITOR":
             try:
-                stub = template_grpc.TemplateMonitorStub(channel, avroserialhelper)
-                async for response in stub.monitorTemplate(s):
+                stub = augment_grpc.AugmentMonitorStub(channel, avroserialhelper)
+                async for response in stub.monitorAugment(s):
                     print(response)
 
             except grpc.aio._call.AioRpcError as e:
@@ -108,8 +108,8 @@ async def run() -> None:
 
         else:
             try:
-                stub = template_grpc.TemplateInitStub(channel, avroserialhelper)
-                async for response in stub.initTemplate(s):
+                stub = augment_grpc.AugmentInitStub(channel, avroserialhelper)
+                async for response in stub.initAugment(s):
                     print(response)
 
             except grpc.aio._call.AioRpcError as e:
