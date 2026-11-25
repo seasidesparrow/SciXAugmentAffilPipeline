@@ -3,7 +3,7 @@ import asyncio
 import os
 
 from API import template_server
-from augmentaffil import augment
+from Augment import augment, db
 
 def get_args():
     parser = argparse.ArgumentParser()
