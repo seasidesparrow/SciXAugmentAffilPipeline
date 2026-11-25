@@ -57,7 +57,7 @@ class Listener(Thread):
 
     def get_status_redis(self, job_id, logger):
         status = None
-        logger.debug("DB: Listening for template status updates")
+        logger.debug("DB: Listening for augment status updates")
         logger.debug(str(self.subscription.listen()))
         for message in self.subscription.listen():
             if self.end:
@@ -74,9 +74,9 @@ class Listener(Thread):
                         yield status
 
 
-class Template(TemplateInitServicer):
+class Augment(AugmentInitServicer):
     def __init__(self, producer, schema, schema_client, logger):
-        self.topic = config.get("TEMPLATE_INPUT_TOPIC")
+        self.topic = config.get("AUGMENT_INPUT_TOPIC")
         self.timestamp = datetime.now().timestamp()
         self.producer = producer
         self.schema = schema
@@ -104,8 +104,8 @@ class Template(TemplateInitServicer):
     def persistent_connection(self, job_request, listener):
         hash = job_request.get("hash")
         msg = db.get_job_status_by_job_hash(self, [str(hash)]).name
-        self.logger.info("TEMPLATE: User requested persitent connection.")
-        self.logger.info("TEMPLATE: Latest message is: {}".format(msg))
+        self.logger.info("AUGMENT: User requested persitent connection.")
+        self.logger.info("AUGMENT: Latest message is: {}".format(msg))
         job_request["status"] = str(msg)
         yield job_request
         if msg == "Error":
@@ -141,7 +141,7 @@ class Template(TemplateInitServicer):
                     continue
                 try:
                     msg = next(listener.get_status_redis(hash, self.logger))
-                    self.logger.debug("TEMPLATE: Redis returned: {} for job_id".format(msg))
+                    self.logger.debug("AUGMENT: Redis returned: {} for job_id".format(msg))
                 except Exception:
                     msg = ""
                     continue
@@ -149,18 +149,18 @@ class Template(TemplateInitServicer):
             else:
                 try:
                     msg = next(listener.get_status_redis(hash, self.logger))
-                    self.logger.debug("TEMPLATE: Redis published status: {}".format(msg))
+                    self.logger.debug("AUGMENT: Redis published status: {}".format(msg))
                 except Exception as e:
                     self.logger.error("failed to read message with error: {}.".format(e))
                     continue
         return
 
-    def initTemplate(self, request, context: grpc.aio.ServicerContext):
-        self.logger.info("Serving initTemplate request %s", request)
+    def initAugment(self, request, context: grpc.aio.ServicerContext):
+        self.logger.info("Serving initAugment request %s", request)
         tstamp = datetime.now().timestamp()
         self.logger.info(json.dumps(request.get("task_args")))
         self.logger.info(
-            "Sending {} to Template Topic".format(
+            "Sending {} to Augment Topic".format(
                 b" %s." % json.dumps(request.get("task_args")).encode("utf-8")
             )
         )
@@ -187,7 +187,7 @@ class Template(TemplateInitServicer):
             listener.subscribe()
             yield from self.persistent_connection(job_request, listener)
 
-    def monitorTemplate(self, request, context: grpc.aio.ServicerContext):
+    def monitorAugment(self, request, context: grpc.aio.ServicerContext):
         self.logger.info("%s", request)
         self.logger.info(json.dumps(request.get("task_args")))
 
@@ -215,7 +215,7 @@ async def serve() -> None:
     server = grpc.aio.server()
     app_log = Logging(logging)
     schema_client = SchemaRegistryClient({"url": config.get("SCHEMA_REGISTRY_URL")})
-    schema = utils.get_schema(app_log, schema_client, config.get("TEMPLATE_INPUT_SCHEMA"))
+    schema = utils.get_schema(app_log, schema_client, config.get("AUGMENT_INPUT_SCHEMA"))
     avroserialhelper = AvroSerialHelper(schema, app_log.logger)
     producer = AvroProducer(
         {
@@ -224,11 +224,11 @@ async def serve() -> None:
         }
     )
 
-    add_TemplateInitServicer_to_server(
-        Template(producer, schema, schema_client, app_log.logger), server, avroserialhelper
+    add_AugmentInitServicer_to_server(
+        Augment(producer, schema, schema_client, app_log.logger), server, avroserialhelper
     )
-    add_TemplateMonitorServicer_to_server(
-        Template(producer, schema, schema_client, app_log.logger), server, avroserialhelper
+    add_AugmentMonitorServicer_to_server(
+        Augment(producer, schema, schema_client, app_log.logger), server, avroserialhelper
     )
     listen_addr = "[::]:" + str(config.get("GRPC_PORT", 50051))
     server.add_insecure_port(listen_addr)
