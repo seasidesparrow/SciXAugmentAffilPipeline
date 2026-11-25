@@ -21,10 +21,12 @@ def get_args():
     subparsers.add_parser("Augment_API", help="Initialize Augment gRPC API")
     subparsers.add_parser("Augment_APP", help="Initialize Augment Working Unit")
 
+    return parser.parse_args()
                        
 
 def main():
-    args = parser.parse_args()
+
+    args = get_args()
 
     if args.action == "AugmentAffil_APP":
         proj_home = os.path.realpath("/app/SciXAugmentAffil/")
