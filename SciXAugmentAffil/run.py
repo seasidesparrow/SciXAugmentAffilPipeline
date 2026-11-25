@@ -36,7 +36,7 @@ def main():
         asyncio.run(augment_server.serve())
 
     if args.load_all:
-        db.load_institutions(cls)
+        db.load_institutions()
 
 if __name__ == "__main__":
     main()
