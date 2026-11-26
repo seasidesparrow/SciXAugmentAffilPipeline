@@ -12,8 +12,16 @@ from SciXPipelineUtils.s3_methods import load_s3_providers
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+
 from Augment import db
 
+
+def load_db(proj_home):
+    app = AugmentAffilApp(proj_home)
+    try:
+        db.load_institutions(app)
+    except Exception as err:
+        print("Welp, that didn't work.... %s" % err)
 
 def init_pipeline(proj_home):
     """

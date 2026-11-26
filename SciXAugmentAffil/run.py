@@ -8,7 +8,13 @@ from Augment import augment, db
 def get_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
+
+    subparsers = parser.add_subparsers(help="commands", dest="action")
+    api_parser = subparsers.add_parser("Augment_API", help="Initialize Augment gRPC API")
+    app_parser = subparsers.add_parser("Augment_APP", help="Initialize Augment Working Unit")
+
+# APP commands
+    app_parser.add_argument(
         "-l",
         "--load-all",
         dest="load_all",
@@ -16,10 +22,6 @@ def get_args():
         default=False,
         help="Load data from files to affil db."
     )
-
-    subparsers = parser.add_subparsers(help="commands", dest="action")
-    subparsers.add_parser("Augment_API", help="Initialize Augment gRPC API")
-    subparsers.add_parser("Augment_APP", help="Initialize Augment Working Unit")
 
     return parser.parse_args()
                        
