@@ -30,15 +30,15 @@ def main():
 
     args = get_args()
 
-    if args.action == "AugmentAffil_APP":
+    if args.action == "Augment_APP":
         proj_home = os.path.realpath("/app/SciXAugmentAffil/")
-        augment.init_pipeline(proj_home)
+        if args.load_all:
+            augment.load_db(proj_home)
+        else:
+            augment.init_pipeline(proj_home)
 
-    elif args.action == "AugmentAffil_API":
+    elif args.action == "Augment_API":
         asyncio.run(augment_server.serve())
-
-    if args.load_all:
-        db.load_institutions()
 
 if __name__ == "__main__":
     main()
